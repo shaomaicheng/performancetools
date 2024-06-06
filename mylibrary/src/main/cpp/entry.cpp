@@ -48,7 +48,7 @@ Agent_OnAttach(JavaVM *vm, char *options, void *reserved) {
     jclass javaConfigClass = static_cast<jclass>(jniEnv->CallStaticObjectMethod(classClazz,
                                                                                 forNameMethodId,
                                                                                 jniEnv->NewStringUTF(
-                                                                                        "com.example.mylibrary.JavaConfig"),
+                                                                                        "lei.cheng.performancetools.JavaConfig"),
                                                                                 JNI_FALSE,
                                                                                 classLoader));
 

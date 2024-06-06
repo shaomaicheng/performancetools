@@ -18,6 +18,8 @@ class PerformanceToolsManager {
     }
 
     fun init(context: Context){
+        // apm
+
         System.loadLibrary(PERFORMANCETOOLS_LIB_NAME)
         // 日志根目录传给jni
         val logDir = File(context.externalCacheDir, PERFORMANCETOOLS_LOG_DIR)

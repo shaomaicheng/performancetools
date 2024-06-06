@@ -2,6 +2,8 @@ package com.example.jvmtidmeo
 
 import android.app.Application
 import lei.cheng.performancetools.PerformanceToolsManager
+import lei.cheng.performancetools.block.BlockConfig
+import lei.cheng.performancetools.block.BlockMonitor
 
 /**
  * @author chenglei01
@@ -11,6 +13,9 @@ import lei.cheng.performancetools.PerformanceToolsManager
 class MineApp:Application() {
     override fun onCreate() {
         super.onCreate()
+        BlockMonitor.init(BlockConfig().apply {
+            this.interval = 2 * 1000L
+        })
         PerformanceToolsManager().init(this)
     }
 }

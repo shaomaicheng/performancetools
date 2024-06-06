@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.jvmtidmeo"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.jvmtidmeo"
@@ -67,4 +67,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation(project(":mylibrary"))
+    implementation(project(":halfhalf_block"))
 }

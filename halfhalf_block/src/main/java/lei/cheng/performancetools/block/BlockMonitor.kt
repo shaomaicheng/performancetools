@@ -34,11 +34,11 @@ object BlockMonitor {
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                 when (event) {
                     Lifecycle.Event.ON_RESUME -> {
-                        background.value = false
+                        background.value = true
                     }
 
                     Lifecycle.Event.ON_STOP -> {
-                        background.value = true
+                        background.value = false
                     }
 
                     else -> {}

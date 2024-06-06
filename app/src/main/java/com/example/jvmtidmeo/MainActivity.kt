@@ -1,6 +1,7 @@
 package com.example.jvmtidmeo
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -25,6 +26,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Greeting("Android", modifier = Modifier.clickable {
+                        Thread.sleep(8 * 1000L)
+                        Toast.makeText(this@MainActivity,"test",Toast.LENGTH_SHORT).show()
                     })
                 }
             }

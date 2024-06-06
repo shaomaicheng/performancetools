@@ -3,7 +3,6 @@ package lei.cheng.performancetools.block
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.os.MessageQueue
 import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -22,9 +21,20 @@ import kotlinx.coroutines.launch
 class BlockWatchDog(private val config: BlockConfig) {
     private var watchJob : Job? = null
     private val checkQueue = arrayListOf<Long>()
-    private val handler = Handler(Looper.getMainLooper())
+    private val handler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            Log.e("halfline","消息被处理,what:${msg.what }.obj:${msg.obj}")
+            when (msg.what){
+                WHAT_CHECK -> {
+                    checkQueue.removeFirst()
+                }
+            }
+        }
+    }
 
     fun start() {
+        Log.e("halfline", "开始卡顿监控")
         watchJob = ProcessLifecycleOwner.get().lifecycleScope.launch(SupervisorJob() + Dispatchers.IO) {
             while (true) {
                 postCheck()
@@ -47,47 +57,54 @@ class BlockWatchDog(private val config: BlockConfig) {
         message.obj = time
         checkQueue.add(time)
         handler.sendMessage(message)
+        Log.e("halfline","发送消息")
     }
 
     private fun checkBlock(blockCallback:(Long)->Unit) {
-        val sendTime = if (checkQueue.isNotEmpty()) checkQueue.first() else 0L
+        Log.e("halfline","检查")
+        val sendTime = if (checkQueue.isNotEmpty()) checkQueue.first() else 0L //获取第一个未处理的消息发送时间
         if (sendTime == 0L) return
         val looper = handler.looper
         val messageQueue = looper.queue
         kotlin.runCatching {
-            val mqClass = messageQueue::class.java
+            val mqClass = Class.forName("android.os.MessageQueue")
             val message = mqClass.declaredFields.find { field->
                 field.name == FIELD_M_MESSAGE
             }
-            val mMessage = message?.get(mqClass) as? Message
+            message?.isAccessible = true
+            val mMessage = message?.get(messageQueue) as? Message
             var next: Message?
             if (mMessage != null) {
                 next = mMessage
                 while (true) {
                     if (next == null) break
                     if (next.what == WHAT_CHECK) {
-                        val time = mMessage.obj as? Long
+                        val time = next.obj as? Long
+                        Log.e("halfline","头部时间:${sendTime},msg时间:${time}")
                         if (time == sendTime) {
                             blockCallback(time)
-                            checkQueue.removeFirst()
+                            break
                         }
                     }
                     next = nextMessage(next)
                 }
             }
+        }.getOrElse { e->
+            Log.e("halfline","异常:$e")
         }
     }
 
     private fun nextMessage(message:Message):Message? {
-        val messageClazz = Message::class.java
+        val messageClazz = Class.forName("android.os.Message")
         val nextField = messageClazz.declaredFields.find {
             it.name == FIELD_NEXT
         }
+        nextField?.isAccessible = true
         return nextField?.get(message) as? Message
     }
 
     companion object {
-        private const val WHAT_CHECK = 0x1234567
+        private const val WHAT_CHECK = 666
         private const val FIELD_M_MESSAGE = "mMessages"
         private const val FIELD_NEXT = "next"
 
