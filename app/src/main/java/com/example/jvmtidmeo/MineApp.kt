@@ -13,8 +13,8 @@ import lei.cheng.performancetools.block.BlockMonitor
 class MineApp:Application() {
     override fun onCreate() {
         super.onCreate()
-        BlockMonitor.init(BlockConfig().apply {
-            this.interval = 2 * 1000L
+        BlockMonitor.init(BlockConfig(this).apply {
+            this.blockCheckInterval = 2 * 1000L
         })
         PerformanceToolsManager().init(this)
     }
