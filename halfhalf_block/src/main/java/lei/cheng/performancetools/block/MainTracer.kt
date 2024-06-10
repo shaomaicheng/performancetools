@@ -62,6 +62,7 @@ object MainTracer {
         }
         val stacks = mainThreadTraces.remove(sendTime)
         running = false
+        val tempRunningTime = runningTime
         runningTime = 0L
         sendTime = 0L
         job?.cancel()
@@ -84,11 +85,17 @@ object MainTracer {
                     val write = file.sink()
                     val bufferSink = write.buffer()
                     stacks?.forEach {
-                        bufferSink.writeUtf8(printStack(it))
+                        val trace = printStack(it)
+                        bufferSink.writeUtf8(trace)
                         bufferSink.writeUtf8("\n");
                     }
                     bufferSink.close()
                     write.close()
+                    config?.uploader?.upload(file)
+                    stacks?.let { stacks->
+                        config?.db?.saveBlockTrace(tempRunningTime, stacks)
+                    }
+
                 }
             }
             Logger.log("halfline", "收集卡顿堆栈数量:${mainThreadTraces.size}")

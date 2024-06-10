@@ -1,10 +1,12 @@
 package com.example.jvmtidmeo
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.jvmtidmeo.ui.theme.JvmtidmeoTheme
+import lei.cheng.performancetools.block.debug.BlockTraceActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,10 +28,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android", modifier = Modifier.clickable {
-                        Thread.sleep(8 * 1000L)
-                        Toast.makeText(this@MainActivity,"test",Toast.LENGTH_SHORT).show()
-                    })
+                    Column {
+                        Greeting("Android", modifier = Modifier.clickable {
+                            Thread.sleep(8 * 1000L)
+                            Toast.makeText(this@MainActivity,"test",Toast.LENGTH_SHORT).show()
+                        })
+
+                        Greeting("Android", modifier = Modifier.clickable {
+                            startActivity(Intent(this@MainActivity,BlockTraceActivity::class.java))
+                        })
+                    }
                 }
             }
         }

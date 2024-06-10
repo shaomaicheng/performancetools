@@ -14,7 +14,8 @@ import androidx.lifecycle.ProcessLifecycleOwner
 object BlockMonitor {
 
     private var background = MutableLiveData<Boolean>()
-    private lateinit var config: BlockConfig
+    lateinit var config: BlockConfig
+        private set
     private lateinit var dogWatcher : BlockWatchDog
 
     init {
