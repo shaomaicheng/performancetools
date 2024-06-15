@@ -1,6 +1,6 @@
 package lei.cheng.performancetools.block
 
-import androidx.lifecycle.LiveData
+import lei.cheng.performancetools.block.debug.BlockTraceEntity
 
 /**
  * @author chenglei01
@@ -9,5 +9,6 @@ import androidx.lifecycle.LiveData
  */
 interface IBlockDB {
     fun saveBlockTrace(runningTime:Long, traces: ArrayList<Array<StackTraceElement>>)
-    fun queryTIme():List<Long>
+    fun queryTime():List<Long>
+    fun queryTraces(time:Long):List<BlockTraceEntity>
 }

@@ -23,6 +23,10 @@ class BlockWatchDog(private val config: BlockConfig) {
     private var running = false
     private val checkQueue = arrayListOf<Long>()
     private var blockMsg: Message? = null
+
+    private var suspectedCount = 0
+    private var lastSuspectedTime = 0L
+
     private val handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -100,12 +104,25 @@ class BlockWatchDog(private val config: BlockConfig) {
                     if (next == null) break
                     if (next.what == WHAT_CHECK) {
                         val time = next.obj as? Long
-                        Log.e("halfline", "头部时间:${sendTime},msg时间:${time}")
+                        Logger.log("halfline", "头部时间:${sendTime},msg时间:${time}" +
+                                "上次疑似时间:$lastSuspectedTime,疑似次数：${suspectedCount}")
                         if (time == sendTime) {
-                            // 第一个check消息的时间和消息时间一样，说明卡顿
-                            blockMsg = next
-                            MainTracer.start(config, sendTime)
-                            blockCallback(time)
+                            // 第一个check消息的时间和消息时间一样，说明疑似卡顿
+                            if (time != lastSuspectedTime && lastSuspectedTime != 0L) {
+                                suspectedCount = 0
+                                lastSuspectedTime = 0
+                            } else {
+                                suspectedCount += 1
+                                lastSuspectedTime = time
+                                if (suspectedCount == config.msgBlockCount) {
+                                    //疑似次数达到，走卡顿逻辑
+                                    blockMsg = next
+                                    MainTracer.start(config, sendTime)
+                                    blockCallback(time)
+                                    suspectedCount = 0
+                                    lastSuspectedTime = 0L
+                                }
+                            }
                             break
                         }
                     }

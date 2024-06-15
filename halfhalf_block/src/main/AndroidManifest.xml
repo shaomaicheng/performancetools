@@ -5,5 +5,8 @@
         <activity android:name=".debug.BlockTraceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".debug.TraceByBlockActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 </manifest>

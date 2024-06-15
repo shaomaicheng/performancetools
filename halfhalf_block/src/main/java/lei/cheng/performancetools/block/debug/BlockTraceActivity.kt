@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import lei.cheng.performancetools.block.R
 
 /**
- * @author chenglei01
+ * @author halflinecode
  * @date 2024/6/10
  * @time 17:45
  */
@@ -30,7 +31,9 @@ class BlockTraceActivity:AppCompatActivity() {
     }
 
     private val adapter by lazy {
-        BlockTraceTimeAdapter()
+        BlockTraceTimeAdapter { view, item->
+            TraceByBlockActivity.launch(this@BlockTraceActivity, item)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,11 +56,12 @@ class BlockTraceActivity:AppCompatActivity() {
     }
 }
 
-class BlockTraceTimeAdapter : RecyclerView.Adapter<BlockTraceViewHolder>() {
+class BlockTraceTimeAdapter(val itemClickListener:(View,Long)->Unit) : RecyclerView.Adapter<BlockTraceViewHolder>() {
     private val data = arrayListOf<Long>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockTraceViewHolder {
         return BlockTraceViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.layout_item_trace_time, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.layout_item_trace_time, parent, false),
+            itemClickListener
         )
     }
 
@@ -76,12 +80,19 @@ class BlockTraceTimeAdapter : RecyclerView.Adapter<BlockTraceViewHolder>() {
     }
 }
 
-class BlockTraceViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class BlockTraceViewHolder(itemView: View, val itemClickListener:(View,Long)->Unit): RecyclerView.ViewHolder(itemView) {
     private val blockTime by lazy {
         itemView.findViewById<TextView>(R.id.blockTime)
     }
 
+    private val container by lazy {
+        itemView.findViewById<ConstraintLayout>(R.id.container)
+    }
+
     fun render(time:Long) {
         blockTime.text = time.toString()
+        container.setOnClickListener {
+            itemClickListener.invoke(it,time)
+        }
     }
 }

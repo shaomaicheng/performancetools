@@ -11,7 +11,7 @@ import lei.cheng.performancetools.block.IBlockDB
 import lei.cheng.performancetools.block.printStack
 
 /**
- * @author chenglei01
+ * @author halflinecode
  * @date 2024/6/10
  * @time 14:34
  */
@@ -33,7 +33,11 @@ class BlockTraceDB(val application: Application):IBlockDB {
         }
     }
 
-    override fun queryTIme(): List<Long> {
+    override fun queryTime(): List<Long> {
         return db.blockTraceDao().queryTimes(System.currentTimeMillis() - 24 * 60 * 60 * 1000L)
+    }
+
+    override fun queryTraces(time: Long): List<BlockTraceEntity> {
+        return db.blockTraceDao().queryByTime(time)
     }
 }

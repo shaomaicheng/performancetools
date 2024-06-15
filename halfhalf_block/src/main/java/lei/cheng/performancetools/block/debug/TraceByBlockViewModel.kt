@@ -5,27 +5,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import lei.cheng.performancetools.block.BlockMonitor
+import lei.cheng.performancetools.block.Logger
 
 /**
  * @author halflinecode
- * @date 2024/6/10
- * @time 17:58
+ * @date 2024/6/16
+ * @time 00:04
  */
-class BlockTraceViewModel:ViewModel() {
-    val times: MutableLiveData<List<Long>> = MutableLiveData()
+class TraceByBlockViewModel:ViewModel() {
+
+    val traces = MutableLiveData<List<BlockTraceEntity>>()
 
     val db by lazy {
         BlockMonitor.config.db
     }
 
-    fun queryTimes() {
-        db?:return
+    fun queryTraces(time: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = db!!.queryTime()
-            withContext(Dispatchers.Main) {
-                times.value = list
+            db?.queryTraces(time)?.let {traces->
+                Logger.log("halfline","traces数目：${traces.size}")
+                this@TraceByBlockViewModel.traces.postValue(traces)
             }
         }
     }

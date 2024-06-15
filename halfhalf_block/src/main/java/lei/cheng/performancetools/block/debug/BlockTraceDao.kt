@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 
 /**
- * @author chenglei01
+ * @author halflinecode
  * @date 2024/6/10
  * @time 14:37
  */
@@ -19,6 +19,9 @@ interface BlockTraceDao {
 
     @Query("select DISTINCT runningTime FROM BlockTraceEntity where time >= :rangeTime")
     fun queryTimes(rangeTime:Long):List<Long>
+
+    @Query("select * from BlockTraceEntity where runningTime = :time")
+    fun queryByTime(time:Long):List<BlockTraceEntity>
 }
 
 

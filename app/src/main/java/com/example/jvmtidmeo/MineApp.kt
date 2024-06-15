@@ -15,6 +15,8 @@ class MineApp:Application() {
         super.onCreate()
         BlockMonitor.init(BlockConfig(this).apply {
             this.blockCheckInterval = 2 * 1000L
+            this.msgBlockCount = 3
+            this.traceInterval = 50
         })
         PerformanceToolsManager().init(this)
     }
