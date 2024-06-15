@@ -43,6 +43,7 @@ class BlockTraceActivity:AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = "卡顿列表"
         toolbar.setTitleTextColor(getColor(R.color.white))
+        supportActionBar?.title = "卡顿列表"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener {

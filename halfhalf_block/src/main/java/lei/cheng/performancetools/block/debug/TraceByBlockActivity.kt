@@ -44,6 +44,7 @@ class TraceByBlockActivity: AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = "卡顿堆栈详情"
         toolbar.setTitleTextColor(getColor(R.color.white))
+        supportActionBar?.title = "卡顿堆栈详情"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener {
