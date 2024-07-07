@@ -1,10 +1,12 @@
 package lei.cheng.performancetools.mainlock
 
+import android.os.Looper
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Thread.State
 
 class MainLockManager {
 
@@ -21,6 +23,8 @@ class MainLockManager {
     }
 
     private fun readMainThreadStatus() {
-
+        val mainThread = Looper.getMainLooper().thread
+        val isBlock = mainThread.state == State.BLOCKED
+        val isWaiting = mainThread.state == State.WAITING
     }
 }
