@@ -68,4 +68,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation(project(":mylibrary"))
     implementation(project(":halfhalf_block"))
+    implementation(project(":mainlock"))
 }

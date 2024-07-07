@@ -25,7 +25,7 @@ interface BlockTraceDao {
 }
 
 
-@Database(entities = [BlockTraceEntity::class], version = 1)
+@Database(entities = [BlockTraceEntity::class], version = 1, exportSchema = false)
 abstract class BlockDataBase : RoomDatabase() {
     abstract fun blockTraceDao(): BlockTraceDao
 }

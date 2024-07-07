@@ -17,3 +17,4 @@ rootProject.name = "jvmtidmeo"
 include(":app")
 include(":mylibrary")
 include(":halfhalf_block")
+include(":mainlock")
