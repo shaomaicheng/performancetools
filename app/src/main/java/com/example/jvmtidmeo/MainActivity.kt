@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.jvmtidmeo.ui.theme.JvmtidmeoTheme
 import lei.cheng.performancetools.block.debug.BlockTraceActivity
+import lei.cheng.performancetools.mainlock.MainLockManager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,10 @@ class MainActivity : ComponentActivity() {
 
                         Greeting("Android", modifier = Modifier.clickable {
                             startActivity(Intent(this@MainActivity,BlockTraceActivity::class.java))
+                        })
+
+                        Greeting("ndk_dlopen", modifier = Modifier.clickable {
+                            MainLockManager.ndk_dlopen()
                         })
                     }
                 }

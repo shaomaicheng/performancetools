@@ -4,6 +4,7 @@ import android.app.Application
 import lei.cheng.performancetools.PerformanceToolsManager
 import lei.cheng.performancetools.block.BlockConfig
 import lei.cheng.performancetools.block.BlockMonitor
+import lei.cheng.performancetools.mainlock.MainLockManager
 
 /**
  * @author chenglei01
@@ -18,6 +19,7 @@ class MineApp:Application() {
             this.msgBlockCount = 3
             this.traceInterval = 50
         })
+        MainLockManager.init()
         PerformanceToolsManager().init(this)
     }
 }

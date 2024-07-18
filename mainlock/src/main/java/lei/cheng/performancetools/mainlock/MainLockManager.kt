@@ -19,9 +19,10 @@ class MainLockManager {
     private val mainLockBlockHandler = MainLockBlockHandler()
 
     fun initIfNeed(config: MainLockConfig) {
-        if (init){
+        if (init) {
             return
         }
+        init()
         this.config = config
         init=true
     }
@@ -48,5 +49,13 @@ class MainLockManager {
             }
 
         }
+    }
+
+    companion object {
+        fun init() {
+            System.loadLibrary("mainlockblock")
+            native_init()
+        }
+        private external fun native_init()
     }
 }
