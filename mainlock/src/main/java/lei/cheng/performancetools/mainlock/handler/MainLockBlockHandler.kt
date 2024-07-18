@@ -12,4 +12,6 @@ class MainLockBlockHandler : IMainBlockHandler {
     override fun handle(config: MainLockConfig) {
 
     }
+
+    external fun queryCompeteThreadId(): Long
 }
