@@ -7,7 +7,7 @@ object MainLockFacade {
 
     fun init(config:MainLockConfig) {
         this.config = config
-        manager.start(config)
+        manager.initIfNeed(config)
     }
 }
 

@@ -12,6 +12,14 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        ndk {
+            abiFilters.apply {
+                add("arm64-v8a")
+                add("armeabi-v7a")
+                add("x86_64")
+            }
+        }
     }
 
     buildTypes {
@@ -29,6 +37,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    externalNativeBuild {
+        cmake {
+            path("src/main/cpp/CMakeLists.txt")
+        }
     }
 }
 
