@@ -14,4 +14,5 @@ object MainLockFacade {
 class MainLockConfig {
     var enable:Boolean = true
     var interval: Long = 2 * 1000L
+    var handleResult: ILockResult? = null
 }
